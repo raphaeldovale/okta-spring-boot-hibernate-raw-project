@@ -3,9 +3,9 @@ package net.dovale.dao;
 import org.hibernate.SessionFactory;
 import net.dovale.entities.Teacher;
 
-public class TeacherDAO extends AbstractCRUDDao<Teacher> {
+public class TeacherDao extends AbstractCrudDao<Teacher> {
 
-    public TeacherDAO(SessionFactory sessionFactory) {
+    public TeacherDao(SessionFactory sessionFactory) {
         super(sessionFactory, Teacher.class, "Teacher");
     }
 }

@@ -2,16 +2,16 @@ package net.dovale.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
-public abstract class AbstractCRUDDao<T> {
+public abstract class AbstractCrudDao<T> {
 
     private final SessionFactory sessionFactory;
     private final Class<T> entityClass;
     private final String entityName;
 
-    protected AbstractCRUDDao(SessionFactory sessionFactory, Class<T> entityClass, String entityName) {
+    protected AbstractCrudDao(SessionFactory sessionFactory, Class<T> entityClass, String entityName) {
         this.sessionFactory = sessionFactory;
         this.entityClass = entityClass;
         this.entityName = entityName;
@@ -31,10 +31,9 @@ public abstract class AbstractCRUDDao<T> {
     }
 
     public List<T> list(){
-            String query = String.format("FROM %s", entityName);
-            return sessionFactory
-                    .getCurrentSession()
-                    .createQuery(query)
-                    .list();
+        Session session = sessionFactory.getCurrentSession();
+        CriteriaQuery<T> query = session.getCriteriaBuilder().createQuery(entityClass);
+        query.select(query.from(entityClass));
+        return session.createQuery(query).getResultList();
     }
 }
